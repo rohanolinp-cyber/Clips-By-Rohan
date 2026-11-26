@@ -34,7 +34,16 @@ jobs:
           mkdir project
           unzip Clips-by-Rohan-starter-project.zip -d project
           cp -R project/app project/build.gradle project/gradle.properties project/settings.gradle .
+      - name: Fix Kotlin JVM target
+        run: |
+          cat >> app/build.gradle <<'EOF'
 
+          tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+              kotlinOptions {
+                  jvmTarget = "1.8"
+              }
+          }
+          EOF
       - name: Build APK
         run: gradle assembleDebug
 
